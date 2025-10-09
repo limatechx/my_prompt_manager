@@ -4,6 +4,9 @@ const elements = {
   promptContent: document.getElementById('prompt-content'),
   titleWrapper: document.getElementById('title-wrapper'),
   contentWrapper: document.getElementById('content-wrapper'),
+  btnOpen: document.getElementById('btn-open'),
+  btnCollapse: document.getElementById('btn-collapse'),
+  sidebar: document.querySelector('.sidebar'),
 };
 
 // Atualiza o estado do wrapper conforme o conteúdo do elemento
@@ -25,15 +28,47 @@ function attachAllEditableHandlers() {
   });
   elements.promptContent.addEventListener('input', () => {
     updateEditableWrapperState(elements.promptContent, elements.contentWrapper);
-  });  
+  });
+}
+
+// Função para abrir a sidebar
+function openSidebar() {
+  if (elements.sidebar) {
+    elements.sidebar.style.display = 'flex';
+  }
+  if (elements.btnOpen) {
+    elements.btnOpen.style.display = 'none';
+  }
+}
+
+// Função para fechar a sidebar
+function closeSidebar() {
+  if (elements.sidebar) {
+    elements.sidebar.style.display = 'none';
+  }
+  if (elements.btnOpen) {
+    elements.btnOpen.style.display = 'block';
+  }
+}
+
+function attachSidebarHandlers() {
+  if (elements.btnOpen) {
+    elements.btnOpen.addEventListener('click', openSidebar);
+  }
+  if (elements.btnCollapse) {
+    elements.btnCollapse.addEventListener('click', closeSidebar);
+  }
 }
 
 // Função de inicialização
 function init() {
   attachAllEditableHandlers();
-  // Atualiza o estado inicial
   updateAllEditableStates();
+  attachSidebarHandlers();
+  // Sidebar inicia aberta em desktop, oculta btnOpen
+  if (elements.sidebar && window.getComputedStyle(elements.sidebar).display !== 'none') {
+    if (elements.btnOpen) elements.btnOpen.style.display = 'none';
+  }
 }
 
-// Executa a inicialização ao carregar o script
 init();
